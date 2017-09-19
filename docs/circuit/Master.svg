@@ -12,7 +12,10 @@
    version="1.2"
    id="svg1454"
    sodipodi:docname="Master.svg"
-   inkscape:version="0.92.2 5c3e80d, 2017-08-06">
+   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
+   inkscape:export-filename="/home/drew/Documents/Projects/xy-plotter/docs/circuit/Master.png"
+   inkscape:export-xdpi="100"
+   inkscape:export-ydpi="100">
   <metadata
      id="metadata1458">
     <rdf:RDF>
@@ -39,7 +42,7 @@
      id="namedview1456"
      showgrid="false"
      inkscape:zoom="0.29294398"
-     inkscape:cx="1588.1894"
+     inkscape:cx="1038.5963"
      inkscape:cy="710.29313"
      inkscape:window-x="1920"
      inkscape:window-y="0"
