@@ -1,3 +1,6 @@
 *.fcstd1
 *.dxf~
 \#*.dxf
+src/Assignment0
+.directory
+.gitignore
