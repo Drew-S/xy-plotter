@@ -10,13 +10,15 @@ This project includes code, drawings, and schematics for building a XY-Plotter. 
 
 **The current version of `main.cpp`, where the server code runs from is being used for testing. This version of the code is not ready for full use.**
 
-This code uses the `LinkedList` library from [PaulMurrayCbr](http://github.com/PaulMurrayCbr/LinkedList)
+This code uses:
+-   `LinkedList` from [PaulMurrayCbr](http://github.com/PaulMurrayCbr/LinkedList)
+-   `ShiftedLCD` from [omersiar](https://github.com/omersiar/ShiftedLCD)
 
 The code is operating well enough to draw basic shapes:
--   Circle
--   Ellipse (with rotations)
--   Polygon (Square, Diamond, Rectangle, etc)
--   Bezier curve
+-   Circle (working)
+-   Ellipse (with rotations) (working)
+-   Polygon (Square, Diamond, Rectangle, etc) (has issues)
+-   Bezier curve (not tested)
 
 These four basic types will allow the drawing of, I believe any shape.
 
@@ -32,7 +34,11 @@ I will be drawing up new ones soon.
 
 ## Circuit
 
-I have the basic circuit made up to draw the basic shapes. There is a couple of features I plan to add to the circuit. Currently there is no circuit diagram (this will be added soon).
+The circuit diagrams are completed, Look in the `docs/circuit` folder for diagrams.
+
+The `Master.svg` file shows the entire diagram for the circuit. They have been divided into smaller files so as to be easier to read.
+
+![Master Circuit Diagram](https://raw.githubusercontent.com/Drew-S/xy-plotter/master/docs/circuit/Master.svg)
 
 ## Author
 
