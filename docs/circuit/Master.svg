@@ -35,13 +35,13 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1051"
+     inkscape:window-height="1021"
      id="namedview1456"
      showgrid="false"
      inkscape:zoom="0.29294398"
-     inkscape:cx="1171.7275"
-     inkscape:cy="464.51235"
-     inkscape:window-x="0"
+     inkscape:cx="1588.1894"
+     inkscape:cy="710.29313"
+     inkscape:window-x="1920"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg1454"
@@ -55,6 +55,13 @@
      id="desc4">Generated with Qt</desc>
   <defs
      id="defs6" />
+  <rect
+     style="opacity:1;fill:#ffffff;fill-opacity:0.97041423;fill-rule:evenodd;stroke:#ff0000;stroke-width:4.4031496;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+     id="rect3010"
+     width="3526.2715"
+     height="1744.3608"
+     x="-51.20433"
+     y="-26.394522" />
   <g
      id="g1452"
      transform="matrix(2.4651485,0,0,2.4651485,543.85244,8.1349901e-4)"
