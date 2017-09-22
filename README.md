@@ -1,6 +1,6 @@
 # XY-Plotter
 
-### 1.0.0
+### 1.1.0
 
 This project includes code, drawings, and schematics for building a XY-Plotter. The code is all made in c++ using [Platform.io](http://platformio.org) to compile and run on an Arduino.
 
