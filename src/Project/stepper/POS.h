@@ -33,12 +33,15 @@ struct PinMap {
     int step;   // Step pin   :: EasyDriver
     int dir;    // Dir pin    :: EasyDriver
     int enable; // Enable pin :: EasyDriver
+
     // Analog Buttons (used by Drive)
     int btnPin; // Analog read pin
     int btn1;   // Resistance value for btn1 (0-1024)
     int btn2;   // Resistance value for btn2 (0-1024)
     int buff;   // Buffer value (default 50) (for button resistance)
-    int flip;
+
+    // Stepper again, stitched on later
+    int flip;   // Boolean whether or not we flip the direction of the stepper
 };
 
 #endif

@@ -10,42 +10,47 @@
 #include "Polygon.h"
 
 /**
- * Create a new polygon drawing between N number of points
- * @param points List<POS>
- * @param drive  Drive
+ * Polygon with a list of points to draw
+ * @param points List<POS> points to draw
+ * @param drive  Drive controller
+ * @param lcd    LCD screen controller
  */
 Polygon::Polygon(LinkedList<POS> *points, Drive *drive, LiquidCrystal * lcd):
     Shape(drive, lcd),
     _points(points) {};
 
 /**
- * Draws the shape
- * @return POS
- *
- * The first point is a moveTo point, does not draw to point.
- *
- * To close the polygon the last point should repeat the first point.
- *
- * Draws a line bettwen P_n and P_{n+1}
+ * Draw from point to point
+ * @param  p Print details
+ * @return   Updated position
  */
 POS Polygon::draw(bool p=false) {
 
     if(p) print();
 
+    // Move to our first point (point[0] is moveTo not line to).
+    // To close a Polygon repeat the first point at the end.
     _drive->moveTo(_points->get(0).x, _points->get(0).y);
 
-    // Loop through the points, removing the front most point and drawing to it
+    // Loop through the points
     for(int i=1; i<_points->size(); i++) {
-        POS point = _points->get(i);
-        _drive->lineTo(point.x, point.y);
+        POS point = _points->get(i);      // Get a point
+        _drive->lineTo(point.x, point.y); // Draw to the point
+
     }
+
+    // Remove points, cleaning up some memory
     for(int i=0; i<_points->size(); i++){
         _points->remove(0);
     }
 
+    // Updated position
     return _drive->get();
 };
 
+/**
+ * Print details to lcd and Serial
+ */
 void Polygon::print() {
     Serial.print("P(");
     _lcd->setCursor(0, 1);

@@ -4,19 +4,20 @@
  *  Used to draw an ellipse. Supports rotation.
  *
  *  @author Drew Sommer
- *  @version 1.0.0
+ *  @version 1.0.1
  *  @license MIT (https://mit-license.org)
  */
 #include "Ellipse.h"
 #include "math.h"
 
 /**
- * Ellipse constructor
- * @param cx    int   Centre x
- * @param cy    int   Centre y
- * @param a     int   a, width
- * @param b     int   b, height
+ * Create an Ellipse without a rotation
+ * @param cx    Centre x position
+ * @param cy    Centre y position
+ * @param a     width
+ * @param b     height
  * @param drive Drive controller
+ * @param lcd   LCD screen controller
  */
 Ellipse::Ellipse(int cx, int cy, int a, int b, Drive *drive, LiquidCrystal *lcd):
     Shape(drive, lcd),
@@ -29,16 +30,17 @@ Ellipse::Ellipse(int cx, int cy, int a, int b, Drive *drive, LiquidCrystal *lcd)
         _angle = 0;
     };
 
-/**
- * Ellipse constructor
- * @param cx     int    Centre x
- * @param cy     int    Centre y
- * @param a      int    a, width
- * @param b      int    b, height
- * @param origin POS    origin point
- * @param angle  double Angle of rotation (radians)
- * @param drive  Drive  controller
- */
+    /**
+     * Create an Ellipse with a rotation
+     * @param cx     Centre x position
+     * @param cy     Centre y position
+     * @param a      width
+     * @param b      height
+     * @param origin (x,y) to rotate by
+     * @param angle  angle of rotation (radians)
+     * @param drive  Drive controller
+     * @param lcd    LCD screen controller
+     */
 Ellipse::Ellipse(
     int cx, int cy, int a, int b,
     POS origin, double angle, Drive *drive,
@@ -53,40 +55,46 @@ Ellipse::Ellipse(
     _angle(angle){};
 
 /**
- * draw the ellipse
- * @return POS drive current position
+ * Draw the Ellipse
+ * @param  p Whether or not to print details
+ * @return   Updated position
  *
- Latex:
-$$
-y = \frac{b}{a}\sqrt{a^2 - x^2} \\
-(x + cx, y+ cy)
-$$
+ * Latex:
+ $$
+ y = \pm\frac{b}{a}\sqrt{a^2 - x^2} \\
+ (x + cx, y+ cy)
+ $$
  */
 POS Ellipse::draw(bool p) {
 
     if(p) print();
 
-    double a2 = pow(_a, 2);
-
     // moveTo start point
-    if(_angle != 0) { // if rotated
+    if(_angle != 0) { // If rotation neede
         POS xy = rotate(_cx - _a, _cy);
         _drive->moveTo(xy.x, xy.y);
-    } else { // not rotated
+
+    } else { // Do not rotate
         _drive->moveTo(_cx - _a, _cy);
     }
-
-    if(p) Serial.println("L");
 
     // Draw the upper 1/2 of the ellipse
     for(int x=-_a; x<=_a; x++){
 
-        int y = (int)(((double)_b/(double)_a)*sqrt(a2 - pow(x, 2)));
+        // Get our y
+        /*
+        $$
+        y = \frac{b}{a}\sqrt{a^2 - x^2} \\
+        (x + cx, y+ cy)
+        $$
+         */
+        int y = (int)(((double)_b/(double)_a)*sqrt(pow(_a, 2) - pow(x, 2)));
 
-        if(_angle != 0) { // if rotated
+        if(_angle != 0) { // If rotation wanted
             POS xy = rotate(x, y);
             _drive->lineTo(xy.x+_cx, xy.y+_cy);
-        } else { // not rotated
+
+        } else { // Do not rotate
             _drive->lineTo(x+_cx, y+_cy);
         }
     }
@@ -94,16 +102,25 @@ POS Ellipse::draw(bool p) {
     // Draw the lower 1/2 of the ellipse
     for(int x=_a; x>=-_a; x--){
 
-        int y = (int)(((double)_b/(double)_a)*sqrt(a2 - pow(x, 2)));
+        // Get our y
+        /*
+        $$
+        y = -\frac{b}{a}\sqrt{a^2 - x^2} \\
+        (x + cx, y+ cy)
+        $$
+         */
+        int y = (int)(((double)_b/(double)_a)*sqrt(pow(_a, 2) - pow(x, 2)));
 
-        if(_angle != 0) { // if rotated
+        if(_angle != 0) { // If rotation wanted
             POS xy = rotate(x, -y);
             _drive->lineTo(xy.x+_cx, xy.y+_cy);
-        } else { // not rotated
+
+        } else { // Do not rotate
             _drive->lineTo(x+_cx, -y+_cy);
         }
     }
 
+    // Updated position
     return _drive->get();
 };
 
@@ -130,26 +147,36 @@ $$
  */
 POS Ellipse::rotate(int x, int y){
 
+    // Our shift point
     POS shift = {_origin.x - _cx, _origin.y - _cy};
+
+    // The new position
     POS newShift = {0, 0};
 
+    // If we have not already calculated our cos and sin, do so and save
     if(!_rotatedValues) {
         _rotatedValues = true;
         _cosA = cos(_angle);
         _sinA = sin(_angle);
     }
 
+    // Since rotation is done by the centre of the Ellipse we rotate the
+    // shift point to know where to move the Ellipse before re-centering
+    // the Ellipse. Only really used when the origin is not the centre of
+    // the Ellipse.
     newShift.x = (int)(_cosA*shift.x - _sinA*shift.y);
     newShift.y = (int)(_sinA*shift.x + _cosA*shift.y);
 
+    // Rotate our point
     int xx = (int)(_cosA*x - _sinA*y);
     int yy = (int)(_sinA*x + _cosA*y);
 
+    // Return new point shifted
     return {xx - newShift.x, yy - newShift.y};
 };
 
 /**
- * Print ellipse info to the client
+ * Print details to LCD and Serail
  */
 void Ellipse::print(){
 

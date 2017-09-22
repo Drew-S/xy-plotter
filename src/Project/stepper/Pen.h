@@ -4,7 +4,7 @@
  *  Controller for manageing the pen (servo) up and down motion for drawing.
  *
  *  @author Drew Sommer
- *  @version 1.0.0
+ *  @version 1.0.1
  *  @license MIT (https://mit-license.org)
  */
 #ifndef PEN_H
@@ -23,11 +23,15 @@ private:
     int _pin;         // Control pin
     int _downPos;     // Min angle (0-180)
     int _upPos;       // Max angle (0-180)
-    int _del;
-    int _cur;
-    int _target;
+    int _del;         // Delay time (ms)
+    int _cur;         // Current angle
+    int _target;      // Target angle
     Servo _servo;     // Arduino servo controller
 
+    /**
+     * Move from the current angle to the target angle
+     * @return completed (true)
+     */
     bool move();
 
 public:
@@ -36,6 +40,7 @@ public:
      * @param pin  The servo pin
      * @param up   The max angle (0-180)
      * @param down The min angle (0-180)
+     * @param del  The delay time (ms)
      */
     Pen(int pin, int up, int down, int del);
 
@@ -66,7 +71,7 @@ public:
      * Get current down pos
      * @return int down pos
      */
-    int getDown();
+    int getDown(){ return _downPos; };
 };
 
 #endif

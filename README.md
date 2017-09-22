@@ -17,8 +17,10 @@ This code uses:
 The code is operating well enough to draw basic shapes:
 -   Circle (working)
 -   Ellipse (with rotations) (working)
--   Polygon (Square, Diamond, Rectangle, etc) (has issues)
--   Bezier curve (not tested)
+-   Polygon (Square, Diamond, Rectangle, etc) (working)
+-   Bezier curve (needs testing)
+
+The Drive functionallity has some quirks with `moveTo()`, taking odd paths to get to next shape. The shapes themselves are unaffected. Without fixing this the system still works well. However, without fixing them it runs slower as moving from one shape to another takes uneeded steps wasting time.
 
 These four basic types will allow the drawing of, I believe any shape.
 
@@ -34,11 +36,11 @@ I will be drawing up new ones soon.
 
 ## Circuit
 
-The circuit diagrams are completed, Look in the `docs/circuit` folder for diagrams.
+Look in the `docs/circuit` folder for diagrams.
 
-The `Master.svg` file shows the entire diagram for the circuit. They have been divided into smaller files so as to be easier to read.
+The `Master.svg` file shows the entire diagram for the circuit. The diagrams are divided into smaller diagrams for easier reading.
 
-![Master Circuit Diagram](https://raw.githubusercontent.com/Drew-S/xy-plotter/master/docs/circuit/Master.svg)
+![Master Circuit Diagram](https://raw.githubusercontent.com/Drew-S/xy-plotter/master/docs/circuit/Master.png)
 
 ## Author
 

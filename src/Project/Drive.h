@@ -6,7 +6,7 @@
  *  Maintains control over the pens up and down position
  *
  *  @author Drew Sommer
- *  @version 1.0.0
+ *  @version 1.0.1
  *  @license MIT (https://mit-license.org)
  */
 #ifndef DRIVE_H
@@ -24,14 +24,14 @@
  */
 class Drive {
 private:
-    int _del;           // delay (ms)
-    POS _xy = { 0, 0 }; // current post
-    Stepper _x;         // X direction stepper
-    Stepper _y;         // Y direction stepper
-    AnalogButtons _abx; // Interupts for X extremes
-    AnalogButtons _aby; // Interupts for Y extremes
-    Pen _pen;           // Servo controller
-    LiquidCrystal *_lcd;
+    int _del;            // delay (ms)
+    POS _xy = { 0, 0 };  // current position
+    Stepper _x;          // X direction stepper
+    Stepper _y;          // Y direction stepper
+    AnalogButtons _abx;  // Interupts for X extremes
+    AnalogButtons _aby;  // Interupts for Y extremes
+    Pen _pen;            // Servo controller (pen up and down)
+    LiquidCrystal *_lcd; // LCD screen
 
     /**
      * Private controller that does the actual moving
@@ -51,6 +51,7 @@ public:
      * @param servo Servo control pin
      * @param up    Max angle (0-180)
      * @param down  Min angle (0-180)
+     * @param lcd   LCD controller
      */
     Drive(PinMap x, PinMap y, int del, int servo, int up, int down, LiquidCrystal *lcd);
 

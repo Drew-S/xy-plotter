@@ -6,7 +6,7 @@
  *  EasyDriver to control the stepper.
  *
  *  @author Drew Sommer
- *  @version 1.0.0
+ *  @version 1.0.1
  *  @license MIT (https://mit-license.org)
  */
 #ifndef STEPPER_H

@@ -12,11 +12,12 @@
 #include "math.h"
 
 /**
- * Create a new circle
- * @param cx    int   centre x
- * @param cy    int   centre y
- * @param r     int   radius
- * @param drive Drive drive controller
+ * Create a Circle (Ellipse where a=b)
+ * @param cx    Centre x
+ * @param cy    Centre y
+ * @param r     Radius
+ * @param drive Drive controller
+ * @param lcd   LCD screen controller
  */
 Circle::Circle(int cx, int cy, int r, Drive *drive, LiquidCrystal *lcd):
     Ellipse(cx, cy, r, r, drive, lcd),
@@ -25,13 +26,12 @@ Circle::Circle(int cx, int cy, int r, Drive *drive, LiquidCrystal *lcd):
     _r(r){}
 
 /**
- * Draw the circle
- * @param  p bool print info
- * @return   POS  current position
- *
+ * Draw the Circle
+ * @param  p Whether or not to print details
+ * @return   Updated position
  Latex:
 $$
-y = \sqrt{r^2-x^2}
+y = \pm\sqrt{r^2-x^2}
 $$
  */
 POS Circle::draw(bool p=false) {
@@ -40,7 +40,7 @@ POS Circle::draw(bool p=false) {
 };
 
 /**
- * Print info to the client
+ * Print details to LCD and Serial
  */
 void Circle::print() {
     Serial.print("C(");

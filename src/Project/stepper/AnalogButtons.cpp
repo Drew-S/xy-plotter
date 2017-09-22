@@ -4,7 +4,7 @@
  *  Manages input on a single pin for multiple buttons (2)
  *
  *  @author Drew Sommer
- *  @version 1.0.0
+ *  @version 1.0.1
  *  @license MIT (https://mit-license.org)
  */
 #include <Arduino.h>
@@ -29,14 +29,19 @@ AnalogButtons::AnalogButtons(int pin, int btn1, int btn2, int buff)
  * @return Returns the -1 for button 1, 1 for button 2, or 0 for neither
  */
 int AnalogButtons::check() {
+
+    // Read our pin
     int ch = analogRead(_pin);
+
+    // Check if our first button is pressed
     if(_btn1 - _buff <= ch && ch < _btn1 + _buff) {
-        // Serial.println(-1);
         return -1;
+
+    // Check if our second button is pressed
     } else if(_btn2 - _buff <= ch && ch < _btn2 + _buff) {
-        // Serial.println(1);
         return 1;
     }
-    // Serial.println(0);
+
+    // No button is pressed
     return 0;
 }

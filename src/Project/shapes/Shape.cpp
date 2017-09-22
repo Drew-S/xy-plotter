@@ -5,33 +5,22 @@
  *  to call children Shape::draw().
  *
  *  @author Drew Sommer
- *  @version 1.0.0
+ *  @version 1.0.1
  *  @license MIT (https://mit-license.org)
  */
 #include "Shape.h"
 
 /**
- * Main constructor
- * @param drive Drive
- *
- * Sub-shapes call the super Shape() passing the drive pointer
+ * Shape with passed parameters
+ * @param drive Drive controller
+ * @param lcd   LCD screen controller
  */
 Shape::Shape(Drive *drive, LiquidCrystal *lcd): _drive(drive), _lcd(lcd){};
 
 /**
- * Destructor
- */
-Shape::~Shape() {
-    delete _drive;
-};
-
-/**
- * Draw function.
- * @return POS
- *
- * Shape only returns drives current POS
- *
- * Sub-shape draws its specific shape
+ * Draw our shape
+ * @param  p Boolean, whether or not to print our details
+ * @return   Updated position
  */
 POS Shape::draw(bool p=false){
 
