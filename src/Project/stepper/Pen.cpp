@@ -36,21 +36,8 @@ void Pen::attach() {
  * @return true/false if completed
  */
 bool Pen::up() {
-    if(_upPos > _downPos) {
-        for(int i=_cur; i<_upPos; i++){
-            _servo.write(i);
-            _cur = i;
-            delay(_del);
-        }
-    } else {
-        for(int i=_cur; i>_upPos; i--){
-            _servo.write(i);
-            _cur = i;
-            delay(_del);
-        }
-    }
-    _up = true;
-    return _up;
+    _target = _upPos;
+    return move();
 }
 
 /**
@@ -58,19 +45,31 @@ bool Pen::up() {
  * @return true/false if completed
  */
 bool Pen::down() {
-    if(_downPos > _upPos) {
-        for(int i=_cur; i<_downPos; i++){
+    _target = _downPos;
+    return move();
+};
+
+int Pen::setDown(int ro) {
+    _downPos = ro;
+    down();
+    return getDown();
+};
+
+bool Pen::move(){
+    if(_cur > _target){
+        for(int i=_cur; i>=_target; i--){
             _servo.write(i);
             _cur = i;
             delay(_del);
         }
     } else {
-        for(int i=_cur; i>_downPos; i--){
+        for(int i=_cur; i<=_target; i++){
             _servo.write(i);
             _cur = i;
             delay(_del);
         }
     }
-    _up = false;
-    return _up;
+    return true;
 }
+
+int Pen::getDown(){ return _downPos; };

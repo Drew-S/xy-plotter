@@ -16,7 +16,7 @@
  *
  * Sub-shapes call the super Shape() passing the drive pointer
  */
-Shape::Shape(Drive *drive): _drive(drive){};
+Shape::Shape(Drive *drive, LiquidCrystal *lcd): _drive(drive), _lcd(lcd){};
 
 /**
  * Destructor

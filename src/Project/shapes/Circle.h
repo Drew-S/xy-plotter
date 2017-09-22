@@ -26,7 +26,7 @@ private:
 
 public:
     Circle(){}; // default constructor
-    Circle(int cx, int cy, int r, Drive *drive); // primary constructor
+    Circle(int cx, int cy, int r, Drive *drive, LiquidCrystal *lcd); // primary constructor
 
     POS draw(bool p);
     POS draw(){ return draw(false); };

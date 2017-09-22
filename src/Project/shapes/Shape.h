@@ -12,6 +12,7 @@
 #define SHAPE_H
 #include "../stepper/POS.h"
 #include "../Drive.h"
+#include "../lib/ShiftedLCD.h"
 
 class Drive;
 
@@ -29,13 +30,14 @@ private:
 public:
 
     Drive *_drive; // Drive controller, accessible by subclasses
+    LiquidCrystal *_lcd;
 
     Shape(){}; // Default constructor
-    Shape(Drive *drive); // Normal constructor
+    Shape(Drive *drive, LiquidCrystal *lcd); // Normal constructor
     ~Shape(); // Destructor
 
-    POS draw(bool p); // Default draw function
-    POS draw(){ return draw(false); };
+    virtual POS draw(bool p); // Default draw function
+    virtual POS draw(){ return draw(false); };
 };
 
 #endif

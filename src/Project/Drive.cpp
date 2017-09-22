@@ -21,13 +21,14 @@
  * @param up    Max angle (0-180)
  * @param down  Min angle (0-180)
  */
-Drive::Drive(PinMap x, PinMap y, int del, int servo, int up, int down)
+Drive::Drive(PinMap x, PinMap y, int del, int servo, int up, int down, LiquidCrystal *lcd)
     : _x(x, del),
       _y(y, del),
       _abx(x.btnPin, x.btn1, x.btn2, x.buff),
       _aby(y.btnPin, y.btn1, y.btn2, y.buff),
       _del(del),
-      _pen(servo, up, down, del) {};
+      _pen(servo, up, down, del),
+      _lcd(lcd) {};
 
 /**
 * Used to setup Drive (call within setup())
@@ -67,9 +68,20 @@ POS Drive::origin() {
     int y = _aby.check();
     _pen.up();
     while(x != 1 || y != 1) {
-        // Serial.print(x);
-        // Serial.print(' ');
-        // Serial.println(y);
+
+        _lcd->setCursor(0,0);
+        _lcd->print("(");
+        _lcd->print(_xy.x);
+        _lcd->print(",");
+        _lcd->print(_xy.y);
+        _lcd->print(")       ");
+
+        Serial.print("(");
+        Serial.print(_xy.x);
+        Serial.print(",");
+        Serial.print(_xy.y);
+        Serial.println(")");
+
         if(x != 1){
             _x.backward();
         }
@@ -79,6 +91,7 @@ POS Drive::origin() {
         delay(_del);
         x = _abx.check();
         y = _aby.check();
+
         delay(_del);
     }
     // Serial.println('origin done');
@@ -98,111 +111,115 @@ POS Drive::get() {
  */
 POS Drive::move(int x, int y, bool up){
 
+    int diff_x = _xy.x - x;
+    int diff_y = _xy.y - y;
 
-        int diff_x = _xy.x - x;
-        int diff_y = _xy.y - y;
+    int x_dir;
+    int y_dir;
+    bool trip = false;
 
-        // Serial.print(_xy.x);
-        // Serial.print(", ");
-        // Serial.print(x);
-        // Serial.print(", ");
-        // Serial.println(diff_x);
+    int ratio_cur = 0;
 
-        // Serial.print(_xy.y);
-        // Serial.print(", ");
-        // Serial.print(y);
-        // Serial.print(", ");
-        // Serial.println(diff_y);
+    bool xFirst = true;
+    int ratio = 0;
 
-        int x_dir;
-        int y_dir;
-        bool trip = false;
+    if(diff_x < 0) {
+        x_dir = -1;
+        diff_x *= -1;
+    } else if(diff_x > 0) x_dir = 1;
+    else x_dir = 0;
 
-        float ratio_f = diff_x / diff_y;
-        int ratio = (int)round(ratio_f);
-        int ratio_cur = 0;
-        bool ratio_x = true;
+    if(diff_y < 0) {
+        y_dir = -1;
+        diff_y *= -1;
+    } else if(diff_y > 0) y_dir = 1;
+    else y_dir = 0;
 
-        if(ratio_f < 1) {
-            ratio_x = false;
-        }
+    if(diff_y > diff_x) {
+        ratio = (int)round(diff_y/diff_x);
+        xFirst = false;
+    } else ratio = (int)round(diff_x/diff_y);
 
-        if(diff_x < 0) {
-            x_dir = -1;
-            diff_x = diff_x * -1;
-        } else if(diff_x > 0) x_dir = 1;
-        else x_dir = 0;
+    if(up) _pen.up();
+    else _pen.down();
 
-        if(diff_y < 0) {
-            y_dir = -1;
-            diff_y = diff_y * -1;
-        } else if(diff_y > 0) y_dir = 1;
-        else y_dir = 0;
+    while((diff_x > 0 || diff_y > 0) && !trip){
 
-        if(up) {
-            _pen.up();
+        _lcd->setCursor(0,0);
+        _lcd->print("(");
+        _lcd->print(_xy.x);
+        _lcd->print(",");
+        _lcd->print(_xy.y);
+        _lcd->print(")       ");
+
+        Serial.print("(");
+        Serial.print(_xy.x);
+        Serial.print(",");
+        Serial.print(_xy.y);
+        Serial.println(")");
+
+        if(xFirst == 1) {
+            if((diff_x > 0 && ratio_cur < ratio) || diff_y <= 0) {
+                if(x_dir > 0) {
+                    _x.forward();
+                    _xy.x--;
+                } else if(x_dir < 0) {
+                    _x.backward();
+                    _xy.x++;
+                }
+                diff_x--;
+                ratio_cur++;
+            }
+            if((diff_y > 0 && ratio_cur >= ratio) || diff_x <= 0) {
+                if(y_dir > 0) {
+                    _y.forward();
+                    _xy.y--;
+                } else if(y_dir < 0) {
+                    _y.backward();
+                    _xy.y++;
+                }
+                diff_y--;
+                ratio_cur = 0;
+            }
+
         } else {
-            _pen.down();
-        }
-
-        while((diff_x > 0 || diff_y > 0) && !trip){
-            // Serial.print(diff_x);
-            // Serial.print(", ");
-            // Serial.println(diff_y);
-            // Serial.print(ratio);
-            // Serial.print(" ");
-            // Serial.print(ratio_cur);
-            // Serial.println("  Here");
-            if(ratio_x) {
-                if((diff_x > 0 && ratio_cur < ratio) || diff_y <= 0) {
-                    if(x_dir > 0) {
-                        _x.forward();
-                    } else if(x_dir < 0) {
-                        _x.backward();
-                    }
-                    diff_x--;
-                    ratio_cur++;
-                } else if((diff_y > 0 && ratio_cur >= ratio) || diff_x <= 0) {
-                    if(y_dir > 0) {
-                        _y.forward();
-                    } else if(y_dir < 0) {
-                        _y.backward();
-                    }
-                    diff_y--;
-                    ratio_cur = 0;
+            if((diff_y > 0 && ratio_cur < ratio) || diff_x <= 0) {
+                if(y_dir > 0) {
+                    _y.forward();
+                    _xy.y--;
+                } else if(y_dir < 0) {
+                    _y.backward();
+                    _xy.y++;
                 }
-
-            } else {
-                if((diff_x > 0 && ratio_cur >= ratio) || diff_y <= 0) {
-                    if(x_dir > 0) {
-                        _x.forward();
-                    } else if(x_dir < 0) {
-                        _x.backward();
-                    }
-                    diff_x--;
-                    ratio_cur = 0;
-                } else if((diff_y > 0 && ratio_cur < ratio) || diff_x <= 0) {
-                    if(y_dir > 0) {
-                        _y.forward();
-                    } else if(y_dir < 0) {
-                        _y.backward();
-                    }
-                    diff_y--;
-                    ratio_cur++;
+                diff_y--;
+                ratio_cur++;
+            }
+            if((diff_x > 0 && ratio_cur >= ratio) || diff_y <= 0) {
+                if(x_dir > 0) {
+                    _x.forward();
+                    _xy.x--;
+                } else if(x_dir < 0) {
+                    _x.backward();
+                    _xy.x++;
                 }
+                diff_x--;
+                ratio_cur = 0;
+            }
 
-            }
-            if(_abx.check() != 0 || _aby.check() != 0) {
-                trip = true;
-            }
         }
-        _xy.x = x;
-        _xy.y = y;
-        if(trip) {
-            // Serial.println("origin");
-            _xy = origin();
-            _x.setPOS(0);
-            _y.setPOS(0);
+        if(_abx.check() != 0 || _aby.check() != 0) {
+            trip = true;
         }
-        return _xy;
-}
+    }
+    if(trip) {
+        // Serial.println("origin");
+        _xy = origin();
+        _x.setPOS(0);
+        _y.setPOS(0);
+    }
+    return get();
+};
+
+int Drive::setPen(int ro) {
+    return _pen.setDown(ro);
+};

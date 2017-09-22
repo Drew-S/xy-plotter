@@ -19,8 +19,8 @@
  * @param p3    POS   end point
  * @param drive Drive drive controller
  */
-Bezier::Bezier(POS p0, POS p1, POS p2, POS p3, Drive *drive):
-    Shape(drive),
+Bezier::Bezier(POS p0, POS p1, POS p2, POS p3, Drive *drive, LiquidCrystal *lcd):
+    Shape(drive, lcd),
     _p0(p0),
     _p1(p1),
     _p2(p2),

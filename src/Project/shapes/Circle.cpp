@@ -18,8 +18,8 @@
  * @param r     int   radius
  * @param drive Drive drive controller
  */
-Circle::Circle(int cx, int cy, int r, Drive *drive):
-    Ellipse(cx, cy, r, r, drive),
+Circle::Circle(int cx, int cy, int r, Drive *drive, LiquidCrystal *lcd):
+    Ellipse(cx, cy, r, r, drive, lcd),
     _cx(cx),
     _cy(cy),
     _r(r){}
@@ -43,11 +43,21 @@ POS Circle::draw(bool p=false) {
  * Print info to the client
  */
 void Circle::print() {
-    Serial.print("Circle(cx=");
+    Serial.print("C(");
     Serial.print(_cx);
-    Serial.print(",cy=");
+    Serial.print(",");
     Serial.print(_cy);
-    Serial.print(",r=");
+    Serial.print(",");
     Serial.print(_r);
-    Serial.print(") M ");
+    Serial.println(")");
+
+    _lcd->setCursor(0,1);
+    _lcd->print("C(");
+    _lcd->print(_cx);
+    _lcd->print(",");
+    _lcd->print(_cy);
+    _lcd->print(",");
+    _lcd->print(_r);
+    _lcd->print(")");
+
 };

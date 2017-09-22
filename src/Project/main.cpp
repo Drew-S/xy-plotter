@@ -9,6 +9,8 @@
  */
 
 #include <Arduino.h>
+#include "lib/ShiftedLCD.h"
+
 #include "Drive.h"
 
 #include <LinkedList.h>
@@ -24,29 +26,40 @@
 
 class Drive;
 
-//         stp dir en x  x-   x+
+//         stp dir en x  x-   x+  buff flip(bool)
 PinMap X = { 4, 2, 3, 0, 340, 510, 50, 1 };
 
-//         stp dir en y  y-   y+
+//         stp dir en y  y-   y+  buff flip(bool)
 PinMap Y = { 7, 5, 6, 1, 340, 510, 50, 1 };
-Drive *drive = new Drive(X, Y, 5, 11, 0, 180);
-bool start = true;
+
+// LCD controller
+LiquidCrystal lcd(9);
+LiquidCrystal *lcd_pointer = &lcd;
+
+//                           del servo up down (up / down angle, max, 71)
+Drive *drive = new Drive(X, Y, 5, 10, 0, 71, lcd_pointer);
+
+const int startButton = 2;
+const int dial = 3;
 
 LinkedList<POS> *polyPoints1 = new LinkedList<POS>();
 LinkedList<POS> *polyPoints2 = new LinkedList<POS>();
 
-LinkedList<Shape> shapes = LinkedList<Shape>();
-
-Ellipse E1;
-Ellipse E2;
-Ellipse E3;
-Circle C;
-Polygon P1;
-Polygon P2;
+Shape *shapes[10];
 
 POS shift = {1050, 1700};
 
+bool all = true;
+bool start = true;
+
 void setup() {
+
+    lcd_pointer->begin(16, 2);
+    lcd_pointer->noCursor();
+
+    lcd_pointer->clear();
+    lcd_pointer->print("Starting XY");
+
     Serial.begin(9600);
     drive->attach();
 
@@ -62,34 +75,42 @@ void setup() {
     polyPoints2->add({130, 2534});
     polyPoints2->add({1050, 3454});
 
-    // shapes.add(Ellipse(shift.x, shift.y, 650, 325, drive));
-    // shapes.add(Ellipse(shift.x, shift.y, 650, 325, {shift.x, shift.y}, PI/3, drive));
-    // shapes.add(Ellipse(shift.x, shift.y, 650, 325, {shift.x, shift.y}, -PI/3, drive));
-    // shapes.add(Circle(shift.x, shift.y, 650, drive));
-    // shapes.add(Polygon(polyPoints, drive));
-    E1 = Ellipse(shift.x, shift.y, 650, 325, drive);
-    E2 = Ellipse(shift.x, shift.y, 650, 325, {shift.x, shift.y}, PI/3, drive);
-    E3 = Ellipse(shift.x, shift.y, 650, 325, {shift.x, shift.y}, -PI/3, drive);
-    C = Circle(shift.x, shift.y, 650, drive);
-    P1 = Polygon(polyPoints1, drive);
-    P2 = Polygon(polyPoints2, drive);
+    shapes[0] = new Ellipse(shift.x, shift.y, 650, 325, drive, lcd_pointer);
+    shapes[1] = new Ellipse(shift.x, shift.y, 650, 325, {shift.x, shift.y}, PI/3, drive, lcd_pointer);
+    shapes[2] = new Ellipse(shift.x, shift.y, 650, 325, {shift.x, shift.y}, -PI/3, drive, lcd_pointer);
+    shapes[3] = new Circle(shift.x, shift.y, 650, drive, lcd_pointer);
+    shapes[4] = new Polygon(polyPoints1, drive, lcd_pointer);
+    shapes[5] = new Polygon(polyPoints2, drive, lcd_pointer);
+
+    Serial.println("Starting XY");
 }
 
-void loop() {
+int temp = 0;
 
-    if(start) {
-        delay(1000);
-        Serial.println(shapes.size());
-        // while(shapes.size() > 0) {
-        //     Serial.println("Drawing");
-        //     shapes.shift().draw();
-        // }
-        E1.draw(true);
-        E2.draw(true);
-        E3.draw(true);
-        C.draw(true);
-        P1.draw(true);
-        P2.draw(true);
-        start = false;
+void loop() {
+    while(all){
+        temp = drive->setPen(map(analogRead(dial), 0, 1023, 0, 71));
+        lcd_pointer->clear();
+        lcd_pointer->print("Pen: ");
+        lcd_pointer->print(map(temp, 0, 71, 100, 0));
+        Serial.print("Pen: ");
+        Serial.print(map(temp, 0, 71, 100, 0));
+        Serial.print(" | ");
+        Serial.print(analogRead(startButton));
+        Serial.print(" | ");
+        Serial.println(analogRead(dial));
+        delay(20);
+        if(analogRead(startButton) > 1000) {
+            all = false;
+            Serial.println("Start drawing");
+            lcd_pointer->clear();
+            lcd_pointer->print("Start drawing");
+            delay(500);
+        }
+    }
+    while(start){
+        for(int i=0; i<10; i++){
+            shapes[i]->draw(true);
+        }
     }
 }

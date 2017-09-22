@@ -24,7 +24,7 @@ private:
 
 public:
     Polygon(){}; // default constructor
-    Polygon(LinkedList<POS> *points, Drive *drive); // primary constructor
+    Polygon(LinkedList<POS> *points, Drive *drive, LiquidCrystal *lcd); // primary constructor
 
     POS draw(bool p); // draw function
     POS draw(){ return draw(false); };

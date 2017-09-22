@@ -14,8 +14,8 @@
  * @param points List<POS>
  * @param drive  Drive
  */
-Polygon::Polygon(LinkedList<POS> *points, Drive *drive):
-    Shape(drive),
+Polygon::Polygon(LinkedList<POS> *points, Drive *drive, LiquidCrystal * lcd):
+    Shape(drive, lcd),
     _points(points) {};
 
 /**
@@ -35,19 +35,51 @@ POS Polygon::draw(bool p=false) {
     _drive->moveTo(_points->get(0).x, _points->get(0).y);
 
     // Loop through the points, removing the front most point and drawing to it
-    while(_points->size() > 0) {
-        POS point = _points->shift();
-        Serial.print("Polygon::point(");
-        Serial.print(point.x);
-        Serial.print(",");
-        Serial.print(point.y);
-        Serial.println(")");
-        _drive->moveTo(point.x, point.y);
+    for(int i=1; i<_points->size(); i++) {
+        POS point = _points->get(i);
+        _drive->lineTo(point.x, point.y);
+    }
+    for(int i=0; i<_points->size(); i++){
+        _points->remove(0);
     }
 
     return _drive->get();
 };
 
 void Polygon::print() {
+    Serial.print("P(");
+    _lcd->setCursor(0, 1);
+    _lcd->print("P(");
 
+    for(int i=0; i<_points->size(); i++){
+        if(i == _points->size()-1){
+
+            Serial.print("{");
+            Serial.print(_points->get(i).x);
+            Serial.print(",");
+            Serial.print(_points->get(i).y);
+            Serial.print("}");
+
+            _lcd->print("{");
+            _lcd->print(_points->get(i).x);
+            _lcd->print(",");
+            _lcd->print(_points->get(i).y);
+            _lcd->print("}");
+
+        } else {
+            Serial.print("{");
+            Serial.print(_points->get(i).x);
+            Serial.print(",");
+            Serial.print(_points->get(i).y);
+            Serial.print("},");
+
+            _lcd->print("{");
+            _lcd->print(_points->get(i).x);
+            _lcd->print(",");
+            _lcd->print(_points->get(i).y);
+            _lcd->print("},");
+        }
+    }
+    Serial.println(")");
+    _lcd->print(")");
 };

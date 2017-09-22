@@ -18,8 +18,8 @@
  * @param b     int   b, height
  * @param drive Drive controller
  */
-Ellipse::Ellipse(int cx, int cy, int a, int b, Drive *drive):
-    Shape(drive),
+Ellipse::Ellipse(int cx, int cy, int a, int b, Drive *drive, LiquidCrystal *lcd):
+    Shape(drive, lcd),
     _cx(cx),
     _cy(cy),
     _a(a),
@@ -41,9 +41,10 @@ Ellipse::Ellipse(int cx, int cy, int a, int b, Drive *drive):
  */
 Ellipse::Ellipse(
     int cx, int cy, int a, int b,
-    POS origin, double angle, Drive *drive
+    POS origin, double angle, Drive *drive,
+    LiquidCrystal *lcd
 ):
-    Shape(drive),
+    Shape(drive, lcd),
     _cx(cx),
     _cy(cy),
     _a(a),
@@ -151,19 +152,37 @@ POS Ellipse::rotate(int x, int y){
  * Print ellipse info to the client
  */
 void Ellipse::print(){
-    Serial.print("Ellipse(cx=");
+
+    Serial.print("E(");
     Serial.print(_cx);
-    Serial.print(",cy=");
+    Serial.print(",");
     Serial.print(_cy);
-    Serial.print(",a=");
+    Serial.print(",");
     Serial.print(_a);
-    Serial.print(",b=");
+    Serial.print(",");
     Serial.print(_b);
-    Serial.print(",origin={");
+    Serial.print(",{");
     Serial.print(_origin.x);
     Serial.print(",");
     Serial.print(_origin.y);
-    Serial.print("},angle=");
+    Serial.print("},");
     Serial.print(_angle);
-    Serial.print(") M ");
+    Serial.println(")");
+
+    _lcd->setCursor(0, 1);
+    _lcd->print("E(");
+    _lcd->print(_cx);
+    _lcd->print(",");
+    _lcd->print(_cy);
+    _lcd->print(",");
+    _lcd->print(_a);
+    _lcd->print(",");
+    _lcd->print(_b);
+    _lcd->print(",{");
+    _lcd->print(_origin.x);
+    _lcd->print(",");
+    _lcd->print(_origin.y);
+    _lcd->print("},");
+    _lcd->print(_angle);
+    _lcd->print(")");
 };

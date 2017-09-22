@@ -25,7 +25,10 @@ private:
     int _upPos;       // Max angle (0-180)
     int _del;
     int _cur;
+    int _target;
     Servo _servo;     // Arduino servo controller
+
+    bool move();
 
 public:
     /**
@@ -52,6 +55,18 @@ public:
      * @return true/false if completed
      */
     bool down();
+
+    /**
+     * Set the low position (using a potentiometer)
+     * @param ro read-out
+     */
+    int setDown(int ro);
+
+    /**
+     * Get current down pos
+     * @return int down pos
+     */
+    int getDown();
 };
 
 #endif

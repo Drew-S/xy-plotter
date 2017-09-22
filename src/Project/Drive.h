@@ -15,6 +15,7 @@
 #include "stepper/Stepper.h"
 #include "stepper/Pen.h"
 #include "stepper/AnalogButtons.h"
+#include "lib/ShiftedLCD.h"
 #include <Arduino.h>
 
 /**
@@ -30,6 +31,7 @@ private:
     AnalogButtons _abx; // Interupts for X extremes
     AnalogButtons _aby; // Interupts for Y extremes
     Pen _pen;           // Servo controller
+    LiquidCrystal *_lcd;
 
     /**
      * Private controller that does the actual moving
@@ -50,7 +52,7 @@ public:
      * @param up    Max angle (0-180)
      * @param down  Min angle (0-180)
      */
-    Drive(PinMap x, PinMap y, int del, int servo, int up, int down);
+    Drive(PinMap x, PinMap y, int del, int servo, int up, int down, LiquidCrystal *lcd);
 
     /**
      * Used to setup Drive (call within setup())
@@ -79,7 +81,17 @@ public:
      */
     POS origin();
 
+    /**
+     * Get the current POS
+     * @return POS, current position
+     */
     POS get();
+
+    /**
+     * Set the pen low point
+     * @param ro read-out
+     */
+    int setPen(int ro);
 };
 
 #endif

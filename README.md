@@ -38,7 +38,7 @@ The circuit diagrams are completed, Look in the `docs/circuit` folder for diagra
 
 The `Master.svg` file shows the entire diagram for the circuit. They have been divided into smaller files so as to be easier to read.
 
-![Master Circuit Diagram](https://raw.githubusercontent.com/Drew-S/xy-plotter/master/docs/circuit/Master.png)
+![Master Circuit Diagram](https://raw.githubusercontent.com/Drew-S/xy-plotter/master/docs/circuit/Master.svg)
 
 ## Author
 

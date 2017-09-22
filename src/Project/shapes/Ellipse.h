@@ -32,10 +32,10 @@ private:
 
 public:
     Ellipse(){}; // Default constructor
-    Ellipse(int cx, int cy, int a, int b, Drive *drive); // REgular ellipse constructor
+    Ellipse(int cx, int cy, int a, int b, Drive *drive, LiquidCrystal *lcd); // REgular ellipse constructor
 
     // Rotated ellipse constructor
-    Ellipse(int cx, int cy, int a, int b, POS origin, double angle, Drive *drive);
+    Ellipse(int cx, int cy, int a, int b, POS origin, double angle, Drive *drive, LiquidCrystal *lcd);
 
     POS draw(bool p);
     POS draw(){ return draw(false); };
