@@ -5,7 +5,7 @@
  *  p1 and p2.
  *
  *  @author Drew Sommer
- *  @version 1.0.0
+ *  @version 1.0.1
  *  @license MIT (https://mit-license.org)
  */
 // TODO: Test Bezier curve
@@ -46,23 +46,13 @@ POS Bezier::draw(bool p) {
     // Move to start point
     _drive->moveTo(_p0.x, _p0.y);
 
-    // TODO: Update resolution to get a proper total number of x steps
+    int resolution = 0;
+    resolution += abs(_p1.x - _p0.x);
+    resolution += abs(_p2.x - _p1.x);
+    resolution += abs(_p3.x - _p2.x);
 
-    // Get our smallest x
-    int min = _p0.x;
-    if(_p1.x < min) min = _p1.x;
-    if(_p2.x < min) min = _p2.x;
-    if(_p3.x < min) min = _p3.x;
-
-    // Get our largest x
-    int max = _p0.x;
-    if(_p1.x > max) max = _p1.x;
-    if(_p2.x > max) max = _p2.x;
-    if(_p3.x > max) max = _p3.x;
-
-    // (max - min) = t steps (resolution)
-    for(int i=0; i<=(max - min); i++){
-        double t = i/(max - min); // 0 <= t <= 1
+    for(int i=0; i<=resolution; i++){
+        double t = (double)i/(double)resolution;  // 0 <= t <= 1
         double t2 = pow(t, 2);    // t^2
         double t3 = pow(t, 3);    // t^3
 

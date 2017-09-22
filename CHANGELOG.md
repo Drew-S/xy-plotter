@@ -9,3 +9,7 @@
 ### Added system for adjusting Pen low point
 ### Added button to confirm Pen position before drawing
 ### Added/Improved commenting
+
+# 1.1.1
+
+### Improved Bezier curve resolution

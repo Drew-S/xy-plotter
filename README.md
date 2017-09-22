@@ -1,6 +1,6 @@
 # XY-Plotter
 
-### 1.0.0
+### 1.1.1
 
 This project includes code, drawings, and schematics for building a XY-Plotter. The code is all made in c++ using [Platform.io](http://platformio.org) to compile and run on an Arduino.
 
@@ -18,7 +18,7 @@ The code is operating well enough to draw basic shapes:
 -   Circle (working)
 -   Ellipse (with rotations) (working)
 -   Polygon (Square, Diamond, Rectangle, etc) (working)
--   Bezier curve (needs testing)
+-   Bezier curve (working)
 
 The Drive functionallity has some quirks with `moveTo()`, taking odd paths to get to next shape. The shapes themselves are unaffected. Without fixing this the system still works well. However, without fixing them it runs slower as moving from one shape to another takes uneeded steps wasting time.
 

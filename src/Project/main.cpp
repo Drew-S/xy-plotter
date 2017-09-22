@@ -63,24 +63,25 @@ void setup() {
     Serial.begin(9600);
     drive->attach();
 
-    polyPoints1->add({400, 400});
-    polyPoints1->add({400, 1700});
-    polyPoints1->add({1700, 1700});
-    polyPoints1->add({1700, 400});
-    polyPoints1->add({400, 400});
+    // polyPoints1->add({400, 400});
+    // polyPoints1->add({400, 1700});
+    // polyPoints1->add({1700, 1700});
+    // polyPoints1->add({1700, 400});
+    // polyPoints1->add({400, 400});
+    //
+    // polyPoints2->add({1050, 3454});
+    // polyPoints2->add({1969, 2534});
+    // polyPoints2->add({1050, 1615});
+    // polyPoints2->add({130, 2534});
+    // polyPoints2->add({1050, 3454});
 
-    polyPoints2->add({1050, 3454});
-    polyPoints2->add({1969, 2534});
-    polyPoints2->add({1050, 1615});
-    polyPoints2->add({130, 2534});
-    polyPoints2->add({1050, 3454});
-
-    shapes[0] = new Ellipse(shift.x, shift.y, 650, 325, drive, lcd_pointer);
-    shapes[1] = new Ellipse(shift.x, shift.y, 650, 325, {shift.x, shift.y}, PI/3, drive, lcd_pointer);
-    shapes[2] = new Ellipse(shift.x, shift.y, 650, 325, {shift.x, shift.y}, -PI/3, drive, lcd_pointer);
-    shapes[3] = new Circle(shift.x, shift.y, 650, drive, lcd_pointer);
-    shapes[4] = new Polygon(polyPoints1, drive, lcd_pointer);
-    shapes[5] = new Polygon(polyPoints2, drive, lcd_pointer);
+    shapes[0] = new Bezier({400, 1200}, {800, 2400}, {1200, 400}, {2400, 800}, drive, lcd_pointer);
+    // shapes[0] = new Ellipse(shift.x, shift.y, 650, 325, drive, lcd_pointer);
+    // shapes[1] = new Ellipse(shift.x, shift.y, 650, 325, {shift.x, shift.y}, PI/3, drive, lcd_pointer);
+    // shapes[2] = new Ellipse(shift.x, shift.y, 650, 325, {shift.x, shift.y}, -PI/3, drive, lcd_pointer);
+    // shapes[3] = new Circle(shift.x, shift.y, 650, drive, lcd_pointer);
+    // shapes[4] = new Polygon(polyPoints1, drive, lcd_pointer);
+    // shapes[5] = new Polygon(polyPoints2, drive, lcd_pointer);
 
     Serial.println("Starting XY");
 }
@@ -94,11 +95,7 @@ void loop() {
         lcd_pointer->print("Pen: ");
         lcd_pointer->print(map(temp, 0, 71, 100, 0));
         Serial.print("Pen: ");
-        Serial.print(map(temp, 0, 71, 100, 0));
-        Serial.print(" | ");
-        Serial.print(analogRead(startButton));
-        Serial.print(" | ");
-        Serial.println(analogRead(dial));
+        Serial.println(map(temp, 0, 71, 100, 0));
         delay(20);
         if(analogRead(startButton) > 1000) {
             all = false;
@@ -112,5 +109,6 @@ void loop() {
         for(int i=0; i<10; i++){
             shapes[i]->draw(true);
         }
+        start = false;
     }
 }
