@@ -10,6 +10,8 @@ This project includes code, drawings, and schematics for building a XY-Plotter. 
 
 **The current version of `main.cpp`, where the server code runs from is being used for testing. This version of the code is not ready for full use.**
 
+### Server
+
 This code uses:
 -   `LinkedList` from [PaulMurrayCbr](http://github.com/PaulMurrayCbr/LinkedList)
 -   `ShiftedLCD` from [omersiar](https://github.com/omersiar/ShiftedLCD)
@@ -27,6 +29,12 @@ These four basic types will allow the drawing of, I believe any shape.
 The client code, which has yet to started, will convert shapes into operable types for the server code (Arduino code).
 
 I plan to make the client code convert SVG files into server code for easy drawing.
+
+Changed the main.cpp file so it can communicate and take commands from the connected computer.
+
+### Client
+
+The client code runs on Node.js using the 'serialport' and 'xml-parser' npm packages. The client app can read SVG files and parse the data into a command list to control the XY-Plotter.
 
 ## CAD and Drawings
 
