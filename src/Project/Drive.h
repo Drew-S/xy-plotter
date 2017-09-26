@@ -32,6 +32,7 @@ private:
     AnalogButtons _aby;  // Interupts for Y extremes
     Pen _pen;            // Servo controller (pen up and down)
     LiquidCrystal *_lcd; // LCD screen
+    bool _p = false;     // Print data
 
     /**
      * Private controller that does the actual moving
@@ -53,7 +54,37 @@ public:
      * @param down  Min angle (0-180)
      * @param lcd   LCD controller
      */
-    Drive(PinMap x, PinMap y, int del, int servo, int up, int down, LiquidCrystal *lcd);
+    Drive(
+        PinMap x,
+        PinMap y,
+        int del,
+        int servo,
+        int up,
+        int down,
+        LiquidCrystal *lcd
+    );
+
+    /**
+     * Driver constructor (singleton)
+     * @param x     PinMap for X direction
+     * @param y     PinMap for Y direction
+     * @param del   Delay (ms)
+     * @param servo Servo control pin
+     * @param up    Max angle (0-180)
+     * @param down  Min angle (0-180)
+     * @param lcd   LCD controller
+     * @param p     Bool print info
+     */
+    Drive(
+        PinMap x,
+        PinMap y,
+        int del,
+        int servo,
+        int up,
+        int down,
+        LiquidCrystal *lcd,
+        bool p
+    );
 
     /**
      * Used to setup Drive (call within setup())

@@ -13,3 +13,13 @@
 # 1.1.1
 
 ### Improved Bezier curve resolution
+
+# 1.2.0
+
+### Converted main.cpp to be a serial communication with client
+### Added client communication for controlling Plotter with computer
+### Added SVG parser to read a SVG file
+#### Parse rect
+#### Parse path
+#### Parse circle
+#### Parse ellipse

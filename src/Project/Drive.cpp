@@ -22,14 +22,50 @@
  * @param down  Min angle (0-180)
  * @param lcd   LCD controller
  */
-Drive::Drive(PinMap x, PinMap y, int del, int servo, int up, int down, LiquidCrystal *lcd)
-    : _x(x, del),
+Drive::Drive(
+    PinMap x,
+    PinMap y,
+    int del,
+    int servo,
+    int up,
+    int down,
+    LiquidCrystal *lcd
+):    _x(x, del),
       _y(y, del),
       _abx(x.btnPin, x.btn1, x.btn2, x.buff),
       _aby(y.btnPin, y.btn1, y.btn2, y.buff),
       _del(del),
       _pen(servo, up, down, del),
-      _lcd(lcd) {};
+      _lcd(lcd){};
+
+/**
+ * Driver constructor (singleton)
+ * @param x     PinMap for X direction
+ * @param y     PinMap for Y direction
+ * @param del   Delay (ms)
+ * @param servo Servo control pin
+ * @param up    Max angle (0-180)
+ * @param down  Min angle (0-180)
+ * @param lcd   LCD controller
+ * @param p     Bool print info
+ */
+Drive::Drive(
+    PinMap x,
+    PinMap y,
+    int del,
+    int servo,
+    int up,
+    int down,
+    LiquidCrystal *lcd,
+    bool p
+):    _x(x, del),
+      _y(y, del),
+      _abx(x.btnPin, x.btn1, x.btn2, x.buff),
+      _aby(y.btnPin, y.btn1, y.btn2, y.buff),
+      _del(del),
+      _pen(servo, up, down, del),
+      _lcd(lcd),
+      _p(p) {};
 
 /**
 * Used to setup Drive (call within setup())
@@ -56,6 +92,12 @@ POS Drive::lineTo(int x, int y) {
  * @param  y New Y position
  * @return   Updated POS
  */
+// BUG: moveTo takes weird path to get to spot. Possibly because of large space:
+// (0,0) -> (400, 400), while shapes like Ellipse and Circle only increment
+// with lineTo a single x value at a time.
+//
+// This does not persist with Polygons however, which should be suffering from
+// same symptoms.
 POS Drive::moveTo(int x, int y) {
     return move(x, y, true);
 };
@@ -84,12 +126,14 @@ POS Drive::origin() {
         _lcd->print(_xy.y);
         _lcd->print(")       ");
 
-        // Print current position to Serial
-        Serial.print("(");
-        Serial.print(_xy.x);
-        Serial.print(",");
-        Serial.print(_xy.y);
-        Serial.println(")");
+        if(_p) {
+            // Print current position to Serial
+            Serial.print("(");
+            Serial.print(_xy.x);
+            Serial.print(",");
+            Serial.print(_xy.y);
+            Serial.println(")");
+        }
 
         // Step once to the left (x-)
         // if not already at x=0
@@ -194,12 +238,15 @@ POS Drive::move(int x, int y, bool up){
         _lcd->print(_xy.y);
         _lcd->print(")       ");
 
-        // Print current position to Serial
-        Serial.print("(");
-        Serial.print(_xy.x);
-        Serial.print(",");
-        Serial.print(_xy.y);
-        Serial.println(")");
+        if(_p){
+            // Print current position to Serial
+            Serial.print("(");
+            Serial.print(_xy.x);
+            Serial.print(",");
+            Serial.print(_xy.y);
+            Serial.println(")");
+
+        }
 
         // Move more in the x direction first (ratio count)
         if(xFirst) {
