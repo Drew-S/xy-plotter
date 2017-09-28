@@ -4,7 +4,7 @@
  *  Main controller for drawing to XY-Plotter with Arduino
  *
  *  @author Drew Sommer
- *  @version 1.0.0
+ *  @version 1.0.1
  *  @license MIT (https://mit-license.org)
  */
 
@@ -175,7 +175,7 @@ void loop() {
      */
     while(set){
 
-        Serial.println(free_ram());
+        // Serial.println(free_ram());
 
         // Setup connection if not already made
         if(!shook) handshake();
@@ -213,9 +213,15 @@ void loop() {
                 lcd_pointer->print("incomingShapeData");
                 lcd_pointer->setCursor(0, 0);
 
+                int val = 0;
+
                 for(int i=0; i<5; i++){
-                    lcd_pointer->print(data[i]);
+                    if(data[i] != NULL){
+                        val = (val*10) + (data[i] - '0');
+                    }
                 }
+                lcd_pointer->print(val);
+                lcd_pointer->print("      ");
                 delay(50);
             // Command for what to do next data
             } else {
@@ -246,10 +252,10 @@ void loop() {
                 incomingShapeData = false; // Reset flag for incoming shape data
 
                 // TODO: Remove Serial info (used for debugging and testing)
-                for(int i=0; i<values->size(); i++){
-                    Serial.print(values->get(i));
-                    Serial.print(",");
-                }
+                // for(int i=0; i<values->size(); i++){
+                //     Serial.print(values->get(i));
+                //     Serial.print(",");
+                // }
 
                 // Parse data for a Circle
                 if(shapeType == 1) {
@@ -263,10 +269,13 @@ void loop() {
                     ind++;         // Increment assignment index
                     cleanValues(); // Clean out values list
 
+                    shapeType = 0;
+
                 // Parse data for an Ellipse
                 } else if(shapeType == 2) {
 
                     // Parse data for an Ellipse with rotation applied
+                    Serial.println(values->size());
                     if(values->size() > 4) {
                         int cx = values->get(0); // Get centre x
                         int cy = values->get(1); // Get centre y
@@ -275,7 +284,7 @@ void loop() {
 
                         //        Get origin.x   Get origin.y
                         POS o = {values->get(4), values->get(5)};
-                        double ang = values->get(6)*PI/18000; // Get angle
+                        double ang = values->get(6)*PI/180; // Get angle
                         // Values should be sent as degrees in integer form and
                         // will be converted to a double in radians. This
                         // simplifies the conversion as a decimal value would be
@@ -286,6 +295,8 @@ void loop() {
 
                         ind++;         // Increment assignment index
                         cleanValues(); // Clean out values list
+
+                        shapeType = 0;
 
                     } else {
                         int cx = values->get(0); // Get centre x
@@ -298,6 +309,8 @@ void loop() {
 
                         ind++;         // Increment assignment index
                         cleanValues(); // Clean out values list
+
+                        shapeType = 0;
                     }
 
                 // Parse data for a Bezier curve
@@ -324,6 +337,8 @@ void loop() {
 
                     ind++;         // Increment assignment index
                     cleanValues(); // Clean out values list
+
+                    shapeType = 0;
 
                 // Parse data for a Polygon
                 } else if(shapeType == 4) {
@@ -362,6 +377,14 @@ void loop() {
                 pen = true;                    // Toggle setup pen
                 completedEntireDrawing = true; // Toggle so arduino does not ask
                                                // for more shapes later
+
+                for(int i=0; i<50; i++){
+                    if(shapes[i] != NULL){
+                        Serial.print("List: ");
+                        shapes[i]->print();
+                    }
+                    delay(50);
+                }
 
             // Deal with other data characters
             } else {
@@ -406,6 +429,9 @@ void loop() {
                             // val = 50*10 + 0 -'0'
                             // val = 500
                         }
+                    }
+                    for(int i=0; i<5; i++){
+                        data[i] = NULL;
                     }
 
                     // Add value to list

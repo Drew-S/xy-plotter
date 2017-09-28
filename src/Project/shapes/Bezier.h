@@ -5,7 +5,7 @@
  *  p1 and p2.
  *
  *  @author Drew Sommer
- *  @version 1.0.0
+ *  @version 1.0.1
  *  @license MIT (https://mit-license.org)
  */
 #ifndef BEZIER_H
@@ -19,11 +19,6 @@ private:
     POS _p1; // first control point
     POS _p2; // second control point
     POS _p3; // end point
-
-    /**
-     * Print details to LCD and Serials
-     */
-    void print();
 
 public:
 
@@ -61,6 +56,11 @@ public:
      * @return Updated position
      */
     POS draw(){ return draw(false); };
+
+    /**
+     * Print details to LCD and Serials
+     */
+    void print();
 };
 
 #endif

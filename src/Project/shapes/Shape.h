@@ -5,7 +5,7 @@
  *  to call children Shape::draw().
  *
  *  @author Drew Sommer
- *  @version 1.0.1
+ *  @version 1.0.2
  *  @license MIT (https://mit-license.org)
  */
 #ifndef SHAPE_H
@@ -21,13 +21,6 @@ class Drive;
  */
 class Shape {
 private:
-
-    // Print function for informing the client of what is being drawn
-    void print(){
-        _lcd->setCursor(0,1);
-        _lcd->print("Shape()");
-        Serial.println("Shape()");
-    };
 
 public:
 
@@ -66,6 +59,15 @@ public:
 
     // Virtual allows for polymorphism and creating an array of shapes (Ellipses,
     // Circles, Etc.) and call their respective draw functions.
+
+    /**
+     * Print shape info to client/lcd
+     */
+    virtual void print(){
+        _lcd->setCursor(0,1);
+        _lcd->print("Shape()");
+        Serial.println("Shape()");
+    };
 };
 
 #endif

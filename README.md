@@ -1,6 +1,6 @@
 # XY-Plotter
 
-### 1.2.0
+### 1.2.1
 
 This project includes code, drawings, and schematics for building a XY-Plotter. The code is all made in c++ using [Platform.io](http://platformio.org) to compile and run on an Arduino.
 
@@ -17,10 +17,10 @@ This code uses:
 -   `ShiftedLCD` from [omersiar](https://github.com/omersiar/ShiftedLCD)
 
 The code is operating well enough to draw basic shapes:
--   Circle (working)
--   Ellipse (with rotations) (working)
--   Polygon (Square, Diamond, Rectangle, etc) (working)
--   Bezier curve (working)
+- [x]   Circle
+- [x]   Ellipse (with rotations)
+- [x]   Polygon (Square, Diamond, Rectangle, etc)
+- [x]   Bezier curve
 
 The Drive functionallity has some quirks with `moveTo()`, taking odd paths to get to next shape. The shapes themselves are unaffected. Without fixing this the system still works well. However, without fixing them it runs slower as moving from one shape to another takes uneeded steps wasting time.
 
@@ -36,11 +36,24 @@ Changed the main.cpp file so it can communicate and take commands from the conne
 
 The client code runs on Node.js using the 'serialport' and 'xml-parser' npm packages. The client app can read SVG files and parse the data into a command list to control the XY-Plotter.
 
+Conversion of shapes:
+- [x] circle -> Circle
+- [x] ellipse -> Ellipse
+- [x] path -> Bezier
+- [x] rect -> Polygon
+- [ ] line -> Polygon
+- [ ] polyline -> Polygon
+- [ ] polygon -> Polygon
+
+Transformations:
+- [ ] By group
+- [ ] By individual shape (Only Ellipse rotation supported)
+
 ## CAD and Drawings
 
 I have removed the old CAD and drawing files as they're outdated.
 
-I will be drawing up new ones soon.
+I will be drawing up new ones soon-ish.
 
 ## Circuit
 

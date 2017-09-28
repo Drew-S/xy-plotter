@@ -181,6 +181,9 @@ POS Drive::move(int x, int y, bool up){
     int diff_x = _xy.x - x;
     int diff_y = _xy.y - y;
 
+    // If no movement to be had, skip unnecessary work.
+    if(diff_x == 0 && diff_y == 0) return get();
+
     int x_dir; // 1=forward, -1=backward
     int y_dir; // 1=forward, -1=backward
     bool trip = false; // We hit an extreme

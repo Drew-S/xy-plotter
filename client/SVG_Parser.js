@@ -71,7 +71,7 @@
  *                  number
  *
  *  @author Drew Sommer
- *  @version 1.0.0
+ *  @version 1.0.1
  *  @license MIT (https://mit-license.org)
  */
 const fs         = require('fs'),
@@ -185,7 +185,9 @@ Path = (object) => {
         if(i == 0) {
             list = list.concat(Bezier(data.slice(0, 8)));
         } else {
-            list = list.concat(Bezier(data.slice(6+mult, 14+mult)));
+            if(data.length > 8) {
+                list = list.concat(Bezier(data.slice(6+mult, 14+mult)));
+            }
         }
     }
 

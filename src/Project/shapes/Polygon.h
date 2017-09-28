@@ -4,7 +4,7 @@
  *  Draws lines between points of any length of lines.
  *
  *  @author Drew Sommer
- *  @version 1.0.0
+ *  @version 1.0.1
  *  @license MIT (https://mit-license.org)
  */
 #ifndef POLYGON_H
@@ -19,11 +19,6 @@
 class Polygon: public Shape {
 private:
     LinkedList<POS> *_points; // Points to draw between, first point is moveTo
-
-    /**
-     * Print details to lcd and Serial
-     */
-    void print();
 
 public:
     /**
@@ -51,6 +46,12 @@ public:
      * @return Updated position
      */
     POS draw(){ return draw(false); };
+
+    /**
+     * Print details to lcd and Serial
+     */
+    void print();
+
 };
 
 #endif

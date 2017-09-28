@@ -5,7 +5,7 @@
  *  formula for an ellipse with a=b.
  *
  *  @author Drew Sommer
- *  @version 1.0.0
+ *  @version 1.0.1
  *  @license MIT (https://mit-license.org)
  */
 #ifndef CIRCLE_H
@@ -21,12 +21,6 @@ private:
     int _cx; // centre x
     int _cy; // centre y
     int _r;  // radius
-
-    /**
-     * Print details to LCD and Serial
-     */
-    void print();
-
 
 public:
 
@@ -61,6 +55,11 @@ public:
      * @return Updated position
      */
     POS draw(){ return draw(false); };
+
+    /**
+     * Print details to LCD and Serial
+     */
+    void print();
 };
 
 #endif

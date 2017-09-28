@@ -19,7 +19,15 @@
 ### Converted main.cpp to be a serial communication with client
 ### Added client communication for controlling Plotter with computer
 ### Added SVG parser to read a SVG file
-#### Parse rect
-#### Parse path
-#### Parse circle
-#### Parse ellipse
+#### Added client side parse of rect
+#### Added client side parse of path
+#### Added client side parse of circle
+#### Added client side parse of ellipse
+
+# 1.2.1
+
+### Converted all Shape's subclass print() to public
+### Converted Shape print() to public and virtual
+### Fixed lcd screen gibberish, converting bytes to their proper integers
+### Added print out information to Bezier curve
+### Improved Ellipse readout

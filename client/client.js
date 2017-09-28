@@ -4,7 +4,7 @@
  *  Controller for connecting and command XY-Plotter
  *
  *  @author Drew Sommer
- *  @version 1.0.0
+ *  @version 1.0.1
  *  @license MIT (https://mit-license.org)
  */
 const SerialPort = require('serialport'),
@@ -81,7 +81,8 @@ if(portname != null) {
                 }
 
                 // If the string is not ';Ready;' or ';next;' print data
-                if(!/;next;|;Ready;/g.test(dataString)) console.log(dataString);
+                // if(!/;next;|;Ready;/g.test(dataString)) console.log(dataString);
+                console.log(dataString);
                 dataString = ''; // Reset data string
 
             }

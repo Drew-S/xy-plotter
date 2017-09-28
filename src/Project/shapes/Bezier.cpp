@@ -5,7 +5,7 @@
  *  p1 and p2.
  *
  *  @author Drew Sommer
- *  @version 1.0.1
+ *  @version 1.0.2
  *  @license MIT (https://mit-license.org)
  */
 // TODO: Test Bezier curve
@@ -84,5 +84,41 @@ POS Bezier::draw(bool p) {
  * Print details to LCD and Serials
  */
 void Bezier::print() {
-    // TODO: write up print function for Bezier curve
+
+    Serial.print("B({");
+    Serial.print(_p0.x);
+    Serial.print(",");
+    Serial.print(_p0.y);
+    Serial.print("},{");
+    Serial.print(_p1.x);
+    Serial.print(",");
+    Serial.print(_p1.y);
+    Serial.print("},{");
+    Serial.print(_p2.x);
+    Serial.print(",");
+    Serial.print(_p2.y);
+    Serial.print("},{");
+    Serial.print(_p3.x);
+    Serial.print(",");
+    Serial.print(_p3.y);
+    Serial.println("})");
+
+    _lcd->setCursor(0, 1);
+    _lcd->print("B({");
+    _lcd->print(_p0.x);
+    _lcd->print(",");
+    _lcd->print(_p0.y);
+    _lcd->print("},{");
+    _lcd->print(_p1.x);
+    _lcd->print(",");
+    _lcd->print(_p1.y);
+    _lcd->print("},{");
+    _lcd->print(_p2.x);
+    _lcd->print(",");
+    _lcd->print(_p2.y);
+    _lcd->print("},{");
+    _lcd->print(_p3.x);
+    _lcd->print(",");
+    _lcd->print(_p3.y);
+    _lcd->print("})");
 };

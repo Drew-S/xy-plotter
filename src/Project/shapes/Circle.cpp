@@ -5,7 +5,7 @@
 *  formula for an ellipse with a=b.
 *
 *  @author Drew Sommer
-*  @version 1.0.0
+*  @version 1.0.1
 *  @license MIT (https://mit-license.org)
 */
 #include "Circle.h"

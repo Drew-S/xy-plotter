@@ -4,7 +4,7 @@
  *  Used to draw an ellipse. Supports rotation.
  *
  *  @author Drew Sommer
- *  @version 1.0.1
+ *  @version 1.0.3
  *  @license MIT (https://mit-license.org)
  */
 #include "Ellipse.h"
@@ -188,12 +188,15 @@ void Ellipse::print(){
     Serial.print(_a);
     Serial.print(",");
     Serial.print(_b);
-    Serial.print(",{");
-    Serial.print(_origin.x);
-    Serial.print(",");
-    Serial.print(_origin.y);
-    Serial.print("},");
-    Serial.print(_angle);
+    if(_angle != 0){
+        Serial.print(",{");
+        Serial.print(_origin.x);
+        Serial.print(",");
+        Serial.print(_origin.y);
+        Serial.print("},");
+        Serial.print(_angle);
+
+    }
     Serial.println(")");
 
     _lcd->setCursor(0, 1);
@@ -205,11 +208,14 @@ void Ellipse::print(){
     _lcd->print(_a);
     _lcd->print(",");
     _lcd->print(_b);
-    _lcd->print(",{");
-    _lcd->print(_origin.x);
-    _lcd->print(",");
-    _lcd->print(_origin.y);
-    _lcd->print("},");
-    _lcd->print(_angle);
+    if(_angle != 0){
+        _lcd->print(",{");
+        _lcd->print(_origin.x);
+        _lcd->print(",");
+        _lcd->print(_origin.y);
+        _lcd->print("},");
+        _lcd->print(_angle);
+
+    }
     _lcd->print(")");
 };

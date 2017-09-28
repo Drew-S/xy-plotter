@@ -4,7 +4,7 @@
  *  Used to draw an ellipse. Supports rotation.
  *
  *  @author Drew Sommer
- *  @version 1.0.1
+ *  @version 1.0.3
  *  @license MIT (https://mit-license.org)
  */
 #ifndef ELLIPSE_H
@@ -27,11 +27,6 @@ private:
 
     POS _origin;       // Origin to rotate by
     double _angle = 0; // Angle to rotate (radians)
-
-    /**
-     * Print details to LCD and Serail
-     */
-    void print();
 
     /**
      * Rotate the ellipse by the origin point, point by point
@@ -105,6 +100,11 @@ public:
      * @return Updated position
      */
     POS draw(){ return draw(false); };
+
+    /**
+     * Print details to LCD and Serail
+     */
+    void print();
 };
 
 #endif
